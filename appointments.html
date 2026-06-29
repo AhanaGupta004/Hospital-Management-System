@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Appointments</title>
+</head>
+<body>
+
+    <h1>All Appointments</h1>
+
+    {% for a in data %}
+        <p>
+            Name: {{a.name}} |
+            Age: {{a.age}} |
+            Date: {{a.date}}
+        </p>
+    {% endfor %}
+
+    <br>
+    <a href="/">Go Back</a>
+
+</body>
+</html>
+{% extends "base.html" %}
