@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Contact Us</h2>
+
+<!-- 🔥 FLASH MESSAGE -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div id="flash-message" class="alert alert-success text-center">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<p>Email: careplus@gmail.com</p>
+<p>Phone: 9999999999</p>
+<p>Address: New Delhi, India</p>
+
+<form method="POST" class="mt-4">
+
+    <input class="form-control mb-2" name="name" placeholder="Your Name" required>
+
+    <input class="form-control mb-2" name="email" placeholder="Your Email" required>
+
+    <textarea class="form-control mb-2" name="message" placeholder="Message" required></textarea>
+
+    <button class="btn btn-primary">Send</button>
+
+</form>
+
+<!-- 🔥 AUTO HIDE SCRIPT -->
+<script>
+    setTimeout(function() {
+        let msg = document.getElementById("flash-message");
+        if (msg) {
+            msg.style.transition = "opacity 0.5s";
+            msg.style.opacity = "0";
+            setTimeout(() => msg.remove(), 500);
+        }
+    }, 2500);
+</script>
+
+{% endblock %}
