@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<button onclick="history.back()" class="btn btn-outline-dark mb-3">
+    ← Go Back
+</button>
+
+<div class="card p-4 shadow mx-auto" style="max-width:500px;">
+
+    <h3 class="text-center mb-3">Edit Doctor</h3>
+
+    <form method="POST">
+
+        <label><strong>Doctor Name</strong></label>
+        <input class="form-control mb-2" type="text" name="name"
+            value="{{doctor.name}}" required>
+
+        <label><strong>Doctor Email</strong></label>
+        <input class="form-control mb-2" type="email" name="email"
+            value="{{doctor.email}}" required>
+
+        <label><strong>Doctor Specialization</strong></label>
+        <input class="form-control mb-2" type="text" name="specialization"
+            value="{{doctor.specialization}}" required>
+
+        <label><strong>Doctor Phone</strong></label>        
+        <input class="form-control mb-2" type="text" name="phone"
+            value="{{doctor.phone}}" required>
+
+        <label><strong>Doctor Experience</strong></label> 
+        <input class="form-control mb-2" type="text" name="experience"
+            value="{{doctor.experience}}" required>
+
+        <label><strong>Doctor Description</strong></label>    
+        <textarea class="form-control mb-2" name="description">{{doctor.description}}</textarea>
+
+        <!-- 🔥 FIXED TIME FIELDS -->
+        <label><strong>Start Time</strong></label>
+        <input class="form-control mb-2" type="time" name="start_time"
+            value="{{doctor_start}}" required>
+
+        <label><strong>End Time</strong></label>
+        <input class="form-control mb-2" type="time" name="end_time"
+            value="{{doctor_end}}" required>
+
+        <button class="btn btn-primary w-100">Update Doctor</button>
+
+    </form>
+
+</div>
+
+{% endblock %}
