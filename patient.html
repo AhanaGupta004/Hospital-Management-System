@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- 🔥 PATIENT PROFILE -->
+<div class="card p-4 shadow mb-4">
+
+    <h4>👤 My Profile</h4>
+
+    <p>
+        <strong>Name:</strong> {{ user.name }} <br>
+        <strong>Email:</strong> {{ user.email }} <br>
+        <strong>Age:</strong> {{ user.age }} <br>
+        <strong>Gender:</strong> {{ user.gender }} <br>
+
+        <strong>Last Visit:</strong>
+        {% if last_visit %}
+            {{ last_visit.date }}
+        {% else %}
+            No visits yet
+        {% endif %}
+        <br><br>
+
+        <a href="/edit_profile" class="btn btn-warning btn-sm">
+            Edit Profile
+        </a>
+    </p>
+
+</div>
+
+<!-- 🔥 BOOK APPOINTMENT -->
+<h3>Book Appointment</h3>
+
+{% if error %}
+    <div id="alert-box" class="alert alert-danger text-center">
+        {{ error }}
+    </div>
+{% endif %}
+{% if request.args.get('success') %}
+    <div id="success-box" class="alert alert-success text-center">
+        {{ request.args.get('success') }}
+    </div>
+{% endif %}
+<div class="card p-4 shadow">
+
+<form method="POST" action="/book">
+
+    <!-- 🔥 DOCTOR DROPDOWN -->
+    <label class="fw-bold">Select Doctor</label>
+
+    <select class="form-select mb-3" name="doctor_id" onchange="showTime(this)" required>
+
+        <option value="">Select a doctor</option>
+
+        {% for d in doctors %}
+            <option value="{{d.id}}" data-time="{{d.start_time}} - {{d.end_time}}">
+                {{d.name}} ({{d.specialization}})
+            </option>
+        {% endfor %}
+
+    </select>
+
+    <!-- 🔥 SHOW DOCTOR TIME -->
+    <p id="doctor-time" class="text-success fw-bold"></p>
+
+    <!-- 🔥 DATE -->
+    <label class="fw-bold">Select Date</label>
+    <input class="form-control mb-3"
+        type="date"
+        name="date"
+        min="{{today}}"
+        required>
+
+    <!-- 🔥 TIME -->
+    <label class="fw-bold">Select Time</label>
+    <input class="form-control mb-3"
+        type="time"
+        name="time"
+        required>
+
+    <button class="btn btn-primary w-100">Book Appointment</button>
+
+</form>
+
+</div>
+
+<hr>
+
+<!-- 🔥 APPOINTMENTS -->
+<h4>Your Appointments</h4>
+
+<table class="table table-bordered mt-3">
+    <tr>
+        <th>Doctor</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Payment</th>
+        <th>Action</th>
+    </tr>
+
+    {% for a in appointments %}
+    <tr>
+        <td>{{a.doctor_name}}</td>
+        <td>{{a.date}}</td>
+        <td>{{a.time}}</td>
+
+        <!-- STATUS -->
+        <td>
+            {% if a.status == 'done' %}
+                <span class="text-success">Completed</span>
+            {% elif a.status == 'rejected' %}
+                <span class="text-danger">Rejected</span>
+            {% elif a.status == 'cancelled' %}
+                <span class="text-danger">Cancelled</span>
+            {% else %}
+                <span class="text-warning">Pending</span>
+            {% endif %}
+        </td>
+
+        <!-- 🔥 PAYMENT -->
+        <td>
+
+            <!-- 🔥 IF CANCELLED + REFUNDED -->
+            {% if a.status == 'cancelled' and a.refund_status == 'refunded' %}
+                <span class="text-info">Refunded</span>
+
+            <!-- 🔥 IF CANCELLED (NO PAYMENT) -->
+            {% elif a.status == 'cancelled' %}
+                <span class="text-muted">Cancelled</span>
+
+            <!-- ✅ IF PAID -->
+            {% elif a.payment_status == 'paid' %}
+                <span class="text-success">Paid</span>
+
+            <!-- 🔥 ELSE SHOW PAY -->
+            {% else %}
+                <a href="/pay/{{a.id}}" 
+                class="btn btn-primary btn-sm">
+                Pay Now
+                </a>
+            {% endif %}
+
+        </td>
+
+        <!-- 🔥 CANCEL -->
+        <td>
+            {% if a.status != 'cancelled' and a.status != 'done' %}
+                <a href="/cancel_appointment/{{ a.id }}" 
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Cancel this appointment?')">
+                   Cancel
+                </a>
+            {% else %}
+                -
+            {% endif %}
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+<hr>
+
+<!-- 🔥 REVIEW -->
+<h4>Give Review</h4>
+
+<form method="POST" action="/add_review">
+    <textarea class="form-control mb-2" name="message" required
+        placeholder="Write your experience..."></textarea>
+
+    <button class="btn btn-success">Submit Review</button>
+</form>
+
+<!-- 🔥 SCRIPT -->
+<script>
+function showTime(select) {
+    let option = select.options[select.selectedIndex];
+
+    if (option.value === "") {
+        document.getElementById("doctor-time").innerText = "";
+        return;
+    }
+
+    let time = option.getAttribute("data-time");
+
+    document.getElementById("doctor-time").innerText = "Available: " + time;
+}
+</script>
+<script>
+setTimeout(function() {
+    let errorBox = document.getElementById("alert-box");
+    let successBox = document.getElementById("success-box");
+
+    if (errorBox) errorBox.style.display = "none";
+    if (successBox) successBox.style.display = "none";
+
+}, 3000); // 3 seconds
+</script>
+{% endblock %}
