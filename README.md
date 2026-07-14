@@ -107,10 +107,6 @@ Hospital-Management-System/
 │   ├── about.html
 │   └── contact.html
 │
-├── static/
-│   ├── css/
-│   ├── js/
-│   └── images/
 │
 └── README.md
 ```
@@ -231,27 +227,6 @@ admin123
 
 ---
 
-## 📸 Screenshots
-
-You can add screenshots here:
-
-- Home Page
-- Login Page
-- Registration Page
-- Patient Dashboard
-- Doctor Dashboard
-- Admin Dashboard
-- Appointment Booking
-- Payment Page
-
-Example:
-
-```
-screenshots/home.png
-screenshots/admin_dashboard.png
-```
-
----
 
 ## 🔮 Future Enhancements
 
