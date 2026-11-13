@@ -3,6 +3,8 @@
 A full-stack Hospital Management System built using **Python (Flask)**, **SQLite**, **HTML**, **CSS**, and **JavaScript**. The system streamlines hospital operations by providing separate dashboards for **Admin**, **Doctor**, and **Patient**, enabling appointment management, doctor scheduling, online payments, reviews, and profile management.
 
 --
+
+
 ##  Features
 ### Patient Module
 - User Registration & Login
